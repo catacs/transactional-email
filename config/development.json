@@ -1,0 +1,21 @@
+{
+  "port": 3000,
+  "persistence": {
+    "type": "mongo",
+    "host": "127.0.0.1",
+    "port": 27017,
+    "username": "",
+    "password": "",
+    "database": "emails-development",
+    "options": [],
+    "uri" : []
+  },
+  "logger": {
+    "format": ":pid :remote-addr - :remote-user - :id [:date[clf]] \":method :url HTTP/:http-version\" :status :res[content-length]",
+    "route" : "./logs",
+    "files" : [{
+        "name": "men-api.log",
+        "levels" : ["all"]
+      }]
+  }
+}

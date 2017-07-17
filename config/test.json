@@ -1,0 +1,21 @@
+{
+  "port": 3001,
+  "persistence": {
+    "type": "mongo",
+    "host": "127.0.0.1",
+    "port": 27017,
+    "username": "",
+    "password": "",
+    "database": "emails-test",
+    "options": [],
+    "uri" : []
+  },
+  "logger": {
+    "format": "combined",
+    "route" : "./logs",
+    "files" : [{
+        "name": "emails.log",
+        "levels" : ["debug", "warning"]
+      }]
+  }
+}
