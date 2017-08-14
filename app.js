@@ -1,20 +1,29 @@
-var express = require('express');
-var config = require('./config/config.js');
-var logger = require('./app/utils/logger.js');
+const cluster = require('cluster');
+const os = require('os');
+const logger = require('./app/utils/logger.js');
 
-var app =  express();
+// get cpu info
+const CPUS = os.cpus();
+if (cluster.isMaster) {
 
-// Configurations
-require('./config/express.js')(app, config);
+    // create a worker for each cpu
+    CPUS.forEach(() => cluster.fork());
+ 
+    cluster.on("listening", worker => {
+			logger.info("Cluster %d connected", worker.process.pid);
+    });
+ 
+    cluster.on("disconnect", worker => {
+			logger.warn("Cluster %d disconnected", worker.process.pid);
+    });
+ 
+    cluster.on("exit", worker => {
+			logger.warn("Cluster %d is dead", worker.process.pid);
 
-// Application routes
-require('./app/routes')(app, config);
-
-// Start the server
-app.set('port', process.env.PORT || 3000);
-
-var server = app.listen(app.get('port'), function () {
-  logger.info('App server listening on port %s', server.address().port);
-});
-
-module.exports = app;
+      // Ensure starts of a new cluster if an old one dies 
+      cluster.fork();      
+    });
+ 
+} else {
+    require("./server.js");
+}
