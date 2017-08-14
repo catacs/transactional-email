@@ -1,8 +1,8 @@
-var express = require('express');
-var config = require('./config/config.js');
-var logger = require('./app/utils/logger.js');
+const express = require('express');
+const config = require('./config/config.js');
+const logger = require('./app/utils/logger.js');
 
-var app =  express();
+const app =  express();
 
 // Configurations
 require('./config/express.js')(app, config);
@@ -13,7 +13,7 @@ require('./app/routes')(app, config);
 // Start the server
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function () {
+const server = app.listen(app.get('port'), function () {
   logger.info('App server listening on port %s', server.address().port);
 });
 
