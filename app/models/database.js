@@ -12,7 +12,7 @@ mongoose.Promise = require('bluebird');
 const connection = mongoose.connection;
 
 connection.on('open', function (ref) {
-  logger.info('Connected to mongo server ' + config.persistence.host + ' port ' + config.persistence.port);
+  logger.info(`Connected to mongo server ${config.persistence.host} port ${config.persistence.port}`);
 });
 
 connection.on('error', function (err) {
@@ -44,10 +44,10 @@ function getMongoUri(config) {
   const database = config.persistence.database || 'emails-development';
 
   let auth = '';
-  const server = host + ':' + port;
+  const server = `${host}:${port}`;
 
   if (user && password) {
-    auth = user + '@' + password;
+    auth = `${user}@${password}`;
   }
 
   const mongoUri = `${mongoURIPrefix}${auth}${server}/${database}`;
@@ -55,7 +55,7 @@ function getMongoUri(config) {
 }
 
 function connect() {
-  return mongoose.connect(mongoURI, { server: { reconnectTries: Number.MAX_VALUE } });
+  return mongoose.connect(mongoURI, { useMongoClient: true, reconnectTries: Number.MAX_VALUE });
 }
 
 module.exports = connect();

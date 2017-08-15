@@ -37,9 +37,17 @@ morgan.token('pid', function getPid() {
   return process.pid;
 });
 
+ // I override logger function
+logger.log = function(){
+  const args = arguments;
+  args[1] = `${process.pid} ${args[1]}`;
+  winston.Logger.prototype.log.apply(this, args);
+};
+
 module.exports = logger;
 module.exports.stream = {
   write: function (message, encoding) {
     logger.info(message.slice(0, -1));
   },
 };
+
